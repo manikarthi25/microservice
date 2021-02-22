@@ -25,7 +25,7 @@ import com.user.microservice.feignclient.OrderClient;
 import com.user.microservice.service.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
 	@Autowired

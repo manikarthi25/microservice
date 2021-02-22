@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.user.microservice.dto.Order;
 
-//http://localhost:9002/microservice/order/getorder/1
-//@FeignClient(value = "order-service",  = "http://localhost:9002/microservice/order")
+//http://localhost:9002/order/orders/getorder/1
+//@FeignClient(value = "order-service",  = "http://localhost:9002/order/orders")
 
-@FeignClient(name = "http://ORDER-SERVICE/microservice/order")
+@FeignClient(name = "http://ORDER-SERVICE/order/orders")
 public interface OrderClient {
 
 	@GetMapping("/getorder/{userId}")
