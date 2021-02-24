@@ -25,14 +25,11 @@ import com.user.microservice.feignclient.OrderClient;
 import com.user.microservice.service.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
 	@Autowired
 	private UserService userService;
-
-	@Autowired
-	private OrderClient orderClient;
 
 	@GetMapping("/getusers")
 	public ResponseEntity<List<User>> getAllUsers() {
@@ -61,11 +58,7 @@ public class UserController {
 
 	@GetMapping("/getorder/{userId}")
 	public ResponseEntity<UserOrder> getOrderByUserId(@PathVariable Long userId) {
-		UserOrder userOrder = new UserOrder();
-		User user = userService.getUserByUserId(userId);
-		Order order = orderClient.getOrderByUserId(userId).getBody();
-		userOrder.setOrder(order);
-		userOrder.setUser(user);
+		UserOrder userOrder = userService.getOrderByUserId(userId);
 
 		if (ObjectUtils.isNotEmpty(userOrder)) {
 			return new ResponseEntity<UserOrder>(userOrder, HttpStatus.OK);
@@ -75,8 +68,8 @@ public class UserController {
 	}
 
 	@PutMapping("/updateorder")
-	public ResponseEntity<Order> updateOrder(@Valid @RequestBody Order order) {
-		Order orderRes = orderClient.updateOrderByOrderId(order).getBody();
+	public ResponseEntity<Order> updateOrderFromUser(@Valid @RequestBody Order order) {
+		Order orderRes = userService.updateOrderFromUser(order);
 		if (ObjectUtils.isNotEmpty(orderRes)) {
 			return new ResponseEntity<Order>(orderRes, HttpStatus.OK);
 		} else {

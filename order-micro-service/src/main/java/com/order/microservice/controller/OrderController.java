@@ -22,7 +22,7 @@ import com.order.microservice.dto.Order;
 import com.order.microservice.service.OrderService;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class OrderController {
 
 	@Autowired
