@@ -1,0 +1,26 @@
+server:
+  port: 9000
+  
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+  
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+      - id: order
+        uri: lb://order-service
+          #http://localhost:9002/
+        predicates:
+        - Path=/order/**
+      - id: user
+        uri: lb://user-service
+          #http://localhost:9001/
+        predicates:
+        - Path=/user/**
