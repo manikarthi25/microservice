@@ -40,6 +40,9 @@ public class TicketBookingServiceImpl implements TicketBookingService {
 
 	@Override
 	public LastTicketBookingHistory bookTrainTicket(TicketBooking ticketBooking) throws TicketBookingBusinessException {
+		if(!(ticketBooking.getTicketCount() == ticketBooking.getPassengerList().size())) {
+			throw new TicketBookingBusinessException("Number of tickets and Number of passenger is not equal. Check passenger List and Ticket Count..");
+		}
 		TrainEO trainEO = checkTrainAvailability(ticketBooking);
 		Double totalTicketFare = ticketBooking.getTicketCount() * trainEO.getTicketFare();
 		TicketBookingHistoryEO ticketBookingHistoryEO = getTicketBookingDetails(ticketBooking, trainEO,
