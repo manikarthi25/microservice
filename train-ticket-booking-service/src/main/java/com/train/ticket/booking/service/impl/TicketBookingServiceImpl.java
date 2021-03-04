@@ -94,7 +94,7 @@ public class TicketBookingServiceImpl implements TicketBookingService {
 		} else {
 			throw new TicketBookingBusinessException("Check your Departure Place and Arrival Place. "
 					+ trainEO.getTrainNumber() + " : This train Departure Place is : " + trainEO.getDeparturePlace()
-					+ " This train Arrival Place is " + trainEO.getArrivalPlace());
+					+ ", This train Arrival Place is " + trainEO.getArrivalPlace());
 		}
 		return trainEO;
 	}
