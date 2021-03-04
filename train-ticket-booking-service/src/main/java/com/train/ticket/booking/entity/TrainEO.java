@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "train")
 public class TrainEO {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long trainNumber;
@@ -29,5 +29,9 @@ public class TrainEO {
 	private String viaPlace;
 
 	private Double ticketFare;
+
+	private Long totalSeat;
+
+	private Long availableSeat;
 
 }

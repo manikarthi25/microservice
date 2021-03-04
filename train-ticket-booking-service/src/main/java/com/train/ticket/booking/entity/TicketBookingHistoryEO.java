@@ -1,9 +1,15 @@
 package com.train.ticket.booking.entity;
 
+import java.time.LocalDateTime;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -31,5 +37,15 @@ public class TicketBookingHistoryEO {
 	private String departurePlace;
 
 	private String arrivalPlace;
+
+	private Double ticketFare;
+
+	private LocalDateTime bookingDateTime;
+
+	private LocalDateTime travelDateTime;
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "trainNumber", referencedColumnName = "trainNumber", insertable = false, updatable = false)
+	private TrainEO trainEO;
 
 }

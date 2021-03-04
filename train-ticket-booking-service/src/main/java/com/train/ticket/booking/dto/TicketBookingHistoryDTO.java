@@ -10,25 +10,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TicketBookingHistoryDTO {
-	
+
 	private Long ticketBookingId;
-	
+
 	private Long userId;
-	
+
 	private Long trainNumber;
-	
+
 	private String pnrNumber;
-	
+
 	private String departurePlace;
-	
+
 	private String arrivalPlace;
-	
+
 	private Double ticketFare;
-	
+
 	private LocalDateTime bookingDateTime;
-	
+
 	private LocalDateTime travelDateTime;
-	
-	
+
+	private TrainDTO trainDTO;
 
 }

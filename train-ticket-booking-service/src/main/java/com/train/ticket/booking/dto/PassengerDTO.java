@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PassengerDTO {
-	
+
 	private Long id;
 
 	private Long ticketBookingId;
@@ -22,5 +22,7 @@ public class PassengerDTO {
 	private String gender;
 
 	private String govtIdProff;
+
+	private TicketBookingHistoryDTO ticketBookingHistoryDTO;
 
 }

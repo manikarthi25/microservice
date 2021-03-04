@@ -18,5 +18,9 @@ public class TrainDTO {
 	private String viaPlace;
 
 	private Double ticketFare;
+	
+	private Long totalSeat;
+
+	private Long availableSeat;
 
 }
