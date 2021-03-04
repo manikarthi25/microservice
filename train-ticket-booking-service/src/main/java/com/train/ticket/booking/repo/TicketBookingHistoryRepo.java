@@ -10,6 +10,6 @@ import com.train.ticket.booking.entity.TicketBookingHistoryEO;
 @Repository
 public interface TicketBookingHistoryRepo extends JpaRepository<TicketBookingHistoryEO, Long> {
 
-	List<TicketBookingHistoryEO> findByUserIdOrderByTravelDateTimeDesc(Long userId);
+	List<TicketBookingHistoryEO> findByUserIdOrderByBookingDateTimeDesc(Long userId);
 
 }

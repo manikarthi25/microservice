@@ -12,27 +12,19 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LastTicketBookingHistory {
-
-	private Long ticketBookingId;
+public class TicketBooking {
 
 	private Long userId;
 
 	private Long trainNumber;
 
-	private Double totalTicketFare;
-
 	private Integer ticketCount;
-
-	private LocalDateTime bookingDateTime;
 
 	private LocalDateTime travelDateTime;
 
 	private String departurePlace;
 
 	private String arrivalPlace;
-
-	private String viaPlace;
 
 	private List<PassengerDTO> passengerList;
 
