@@ -61,3 +61,46 @@ values(1,"Y","Saving",10000);
 insert into account
 (customer_id,active_account,account_type,amount)
 values(2,"Y","Current()",5000);
+
+
+#Train Ticket Booking Schema Query
+select * from train;
+select * from ticket_booking_history;
+select * from passenger;
+
+
+insert into train
+(arrival_place,
+available_seat,
+departure_place,
+ticket_fare,
+total_seat,
+via_place) values("Coimbatore",40,"Chennai",550,50,"Trichy");
+
+insert into ticket_booking_history(booking_date_time,
+ticket_count,
+total_ticket_fare,
+train_number,
+travel_date_time,
+user_id) values(current_timestamp(),2,1100,1,current_timestamp(),10);
+
+insert into passenger(
+age,
+first_name,
+gender,
+govt_id_proff,
+last_name,
+ticket_booking_id)
+values(35,"Mani","Male","PANCACPM","Karthi",1);
+
+Alter TABLE train MODIFY train_number bigint NOT NULL AUTO_INCREMENT;
+Alter TABLE ticket_booking_history MODIFY ticket_booking_id bigint NOT NULL AUTO_INCREMENT;
+Alter TABLE passenger MODIFY id bigint NOT NULL AUTO_INCREMENT;
+
+desc passenger;
+desc ticket_booking_history
+desc train
+
+drop table passenger
+drop table ticket_booking_history
+drop table train;
