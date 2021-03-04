@@ -17,13 +17,9 @@ public class TicketBookingHistoryDTO {
 
 	private Long trainNumber;
 
-	private String pnrNumber;
+	private Double totalTicketFare;
 
-	private String departurePlace;
-
-	private String arrivalPlace;
-
-	private Double ticketFare;
+	private Integer ticketCount;
 
 	private LocalDateTime bookingDateTime;
 

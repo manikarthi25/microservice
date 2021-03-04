@@ -31,14 +31,10 @@ public class TicketBookingHistoryEO {
 	private Long userId;
 
 	private Long trainNumber;
-
-	private String pnrNumber;
-
-	private String departurePlace;
-
-	private String arrivalPlace;
-
-	private Double ticketFare;
+	
+	private Double totalTicketFare;
+	
+	private Integer ticketCount;
 
 	private LocalDateTime bookingDateTime;
 
