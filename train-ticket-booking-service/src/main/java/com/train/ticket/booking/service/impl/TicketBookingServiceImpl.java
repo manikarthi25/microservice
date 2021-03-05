@@ -104,6 +104,7 @@ public class TicketBookingServiceImpl implements TicketBookingService {
 		} else {
 			userReponse.setMessage("User service up and running, Got response from user service");
 		}
+		userReponse.setUserId(userId);
 		return userReponse;
 	}
 

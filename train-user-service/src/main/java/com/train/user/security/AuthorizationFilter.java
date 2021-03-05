@@ -32,11 +32,11 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 			throws ServletException, IOException {
 		String authorizationHeaderName = request.getHeader(environment.getProperty("authorization.token.header.name"));
 
-		if (authorizationHeaderName == null
+		/*if (authorizationHeaderName == null
 				|| !authorizationHeaderName.startsWith(environment.getProperty("authorization.token.header.prefix"))) {
 			filterChain.doFilter(request, response);
 			return;
-		}
+		}*/
 
 		UsernamePasswordAuthenticationToken authentication = getAuthorization(request);
 		SecurityContextHolder.getContext().setAuthentication(authentication);

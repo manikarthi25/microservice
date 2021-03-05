@@ -28,9 +28,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable();
-		httpSecurity.authorizeRequests().antMatchers(HttpMethod.POST, "/user/**").permitAll().anyRequest()
-				.authenticated().and().addFilter(getAuthenticationFilter())
-				.addFilter(new AuthorizationFilter(environment, authenticationManager()));
+		httpSecurity.authorizeRequests()
+		.antMatchers(HttpMethod.POST, "/user/**").permitAll()
+		.anyRequest().authenticated().and().addFilter(getAuthenticationFilter())
+		.addFilter(new AuthorizationFilter(environment, authenticationManager()));
 		httpSecurity.headers().frameOptions().disable();
 	}
 

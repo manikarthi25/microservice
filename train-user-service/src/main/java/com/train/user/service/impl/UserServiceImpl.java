@@ -64,11 +64,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserEO userEO = userRepo.findByEmail(username);
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		UserEO userEO = userRepo.findByEmail(email);
 
 		if (userEO == null)
-			throw new UsernameNotFoundException(username);
+			throw new UsernameNotFoundException(email);
 
 		return new User(userEO.getEmail(), userEO.getEncryptedPassword(), true, true, true, true, new ArrayList<>());
 	}
