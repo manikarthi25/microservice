@@ -9,5 +9,7 @@ public class ManiBankConsonents {
 	public static final String TOACCOUNT = "toaccount";
 	
 	public static final String YYYYMMDD_HHMMSS = "yyyy-MM-dd HH:mm:ss";
+	
+	public static final Long ZERO = (long) 0;
 
 }

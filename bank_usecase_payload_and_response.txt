@@ -1,0 +1,97 @@
+1. http://localhost:8084/mani/bank/money-transfer - POST Methoad
+Payload:
+{
+  "fromAccountNumber": 1,
+  "toAccountNumber": 2,
+  "transferAmount": 55
+}
+
+Response:
+{
+  "transactionId": 95,
+  "fromAccountNumber": 1,
+  "transferAmount": 55,
+  "transferStatus": "Tranaction Success",
+  "tranactionTS": "2021-03-05T18:07:04.5000094",
+  "toAccountNumber": 2
+}
+
+
+2. http://localhost:8084/mani/bank/account/statements?accountNumber=1&month=March&year=2021 - GET Method
+Response:
+{
+  "accountNumber": 1,
+  "accountHistoryList": [
+    {
+      "tranactionDate": "2021-03-05T18:07:01",
+      "debitAmount": "55",
+      "creditAmount": " ",
+      "balanceAmount": 8923
+    }
+  ]
+}
+
+
+3. http://localhost:8084/mani/bank/account/statements?accountNumber=1&month=February&year=2021 - GET Method
+Response:
+{
+  "accountNumber": 1,
+  "accountHistoryList": [
+    {
+      "tranactionDate": "2021-02-24T16:35:00",
+      "debitAmount": "150",
+      "creditAmount": " ",
+      "balanceAmount": 9150
+    },
+    {
+      "tranactionDate": "2021-02-24T16:37:32",
+      "debitAmount": "150",
+      "creditAmount": " ",
+      "balanceAmount": 9000
+    },
+    {
+      "tranactionDate": "2021-02-24T17:45:46",
+      "debitAmount": "0",
+      "creditAmount": " ",
+      "balanceAmount": 9000
+    },
+    {
+      "tranactionDate": "2021-02-24T17:47:05",
+      "debitAmount": "5",
+      "creditAmount": " ",
+      "balanceAmount": 8995
+    },
+    {
+      "tranactionDate": "2021-02-24T18:46:26",
+      "debitAmount": "-6",
+      "creditAmount": " ",
+      "balanceAmount": 9001
+    },
+    {
+      "tranactionDate": "2021-02-24T18:56:04",
+      "debitAmount": "0",
+      "creditAmount": " ",
+      "balanceAmount": 9001
+    },
+    {
+      "tranactionDate": "2021-02-24T18:56:27",
+      "debitAmount": "3",
+      "creditAmount": " ",
+      "balanceAmount": 8998
+    },
+    {
+      "tranactionDate": "2021-02-24T19:01:01",
+      "debitAmount": "0",
+      "creditAmount": " ",
+      "balanceAmount": 8998
+    },
+    {
+      "tranactionDate": "2021-02-24T21:32:58",
+      "debitAmount": "20",
+      "creditAmount": " ",
+      "balanceAmount": 8978
+    }
+  ]
+}
+
+2. 

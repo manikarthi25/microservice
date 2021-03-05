@@ -1,17 +1,15 @@
 package com.bank.mani.service;
 
-import java.util.List;
-
-import com.bank.mani.dto.AccountStatement;
-import com.bank.mani.dto.TransactionHistoryDTO;
 import com.bank.mani.exception.BankBusinessException;
+import com.bank.mani.model.AccountStatement;
+import com.bank.mani.model.MoneyTransfer;
+import com.bank.mani.model.TransactionHistory;
 
 public interface ManiBankService {
 
-	TransactionHistoryDTO doFundTransfer(Long fromAccountNumber, Long toAccountNumber, Long transferAmount)
-			throws BankBusinessException, Exception;
+	TransactionHistory doFundTransfer(MoneyTransfer moneyTransfer) throws BankBusinessException, Exception;
 
-	List<AccountStatement> getAccountStatements(Long accountNumber, String month, String year)
+	AccountStatement getAccountStatements(Long accountNumber, String month, int year)
 			throws IllegalArgumentException, BankBusinessException;
 
 }

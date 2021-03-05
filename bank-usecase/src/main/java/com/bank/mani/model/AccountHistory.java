@@ -1,9 +1,6 @@
-package com.bank.mani.dto;
+package com.bank.mani.model;
 
 import java.time.LocalDateTime;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,21 +11,14 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class AccountStatement {
+public class AccountHistory {
 
-	@NotNull
 	private LocalDateTime tranactionDate;
 
 	private String debitAmount;
 
 	private String creditAmount;
 
-	@NotNull
-	@Positive
 	private Long balanceAmount;
-
-	@NotNull
-	@Positive
-	private Long accountNumber;
 
 }
