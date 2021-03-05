@@ -1,0 +1,76 @@
+1. localhost:9002/ticket/ticket-booking - POST Method
+Payload:
+{
+    "userId": 10,
+    "trainNumber": 1,
+    "ticketCount": 40,
+    "travelDateTime": "2021-03-05T01:14:49",
+    "departurePlace": "Chennai",
+    "arrivalPlace": "Coimbatore",
+    "passengerList": [
+        {
+            "firstName": "Mani",
+            "lastName": "Karthi",
+            "age": 35,
+            "gender": "Male",
+            "govtIdProff": "PANCACPM"
+        },
+        {
+            "firstName": "Raji",
+            "lastName": "Raj",
+            "age": 80,
+            "gender": "Female",
+            "govtIdProff": "ABCD"
+        }
+    ]
+}
+
+Response:
+
+2.localhost:9002/ticket/view-last-booking/10 - GET Method
+Response:
+{
+    "ticketBookingId": 2,
+    "userId": 10,
+    "trainNumber": 1,
+    "totalTicketFare": 550,
+    "ticketCount": 1,
+    "bookingDateTime": "2021-03-05T01:14:49",
+    "travelDateTime": "2021-03-05T01:14:49",
+    "departurePlace": "Chennai",
+    "arrivalPlace": "Coimbatore",
+    "viaPlace": "Trichy",
+    "passengerList": [
+        {
+            "id": 2,
+            "ticketBookingId": 2,
+            "firstName": "Mani",
+            "lastName": "Karthi",
+            "age": 35,
+            "gender": "Male",
+            "govtIdProff": "PANCACPM"
+        }
+    ]
+}
+
+3. localhost:9001/user/login - POST method
+Payload:
+{
+	"email" : "mani@gmail.com",
+	"password" : "mani"
+}
+Response: See in header
+token →eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3YzNkNmE1YS0zMGQ3LTQ3NDYtOTEwZi04YTlmOTA5NjY4ZGIiLCJleHAiOjE2MTU3NDA5MjJ9.EZ8iUkmu2vHiDyD_4rzCsnEwDPP1s0-KnTYOEeEVptWFxJ4d18wjqNFkFcyjSFH_B3xM7zW0lF_Mj1Oqt0HfLA
+userid →7c3d6a5a-30d7-4746-910f-8a9f909668db
+
+4. localhost:9001/user/add - POST Method
+Payload:
+{
+	"firstName" : "mani",
+	"lastName" : "karthi",
+	"email" : "mani013@gmail.com",
+	"password" : "mani"
+}
+5.localhost:9001/user/status -GET Method
+Input in Header:
+Authorization - manieyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3YzNkNmE1YS0zMGQ3LTQ3NDYtOTEwZi04YTlmOTA5NjY4ZGIiLCJleHAiOjE2MTU3NDA5MjJ9.EZ8iUkmu2vHiDyD_4rzCsnEwDPP1s0-KnTYOEeEVptWFxJ4d18wjqNFkFcyjSFH_B3xM7zW0lF_Mj1Oqt0HfLA
