@@ -1,10 +1,10 @@
 package com.train.user.service.impl;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import com.train.user.dto.UserDTO;
 import com.train.user.entity.UserEO;
 import com.train.user.repo.UserRepo;
+import com.train.user.request.model.UserRequestModel;
+import com.train.user.response.model.UserResponseModel;
 import com.train.user.service.UserService;
 
 @Service
@@ -37,16 +39,28 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO addUser(UserDTO userDTO) {
+	public UserResponseModel addUser(UserRequestModel userRequestModel) {
 
-		userDTO.setUserId(UUID.randomUUID().toString());
-		userDTO.setEncryptedPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+		UserEO userEO = new UserEO();
 		ModelMapper modelMapper = new ModelMapper();
-		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-		userRepo.save(modelMapper.map(userDTO, UserEO.class));
-		UserDTO user = modelMapper.map(userDTO, UserDTO.class);
-		return user;
+		userEO.setUserSecurityId(UUID.randomUUID().toString());
+		userEO.setEncryptedPassword(bCryptPasswordEncoder.encode(userRequestModel.getPassword()));
+		userEO.setEmail(userRequestModel.getEmail());
+		userEO.setFirstName(userRequestModel.getFirstName());
+		userEO.setLastName(userRequestModel.getLastName());
+
+		UserEO userEORes = userRepo.save(userEO);
+		return getUserResponseModel(modelMapper.map(userEORes, UserDTO.class));
+	}
+
+	private UserResponseModel getUserResponseModel(UserDTO userDTO) {
+		UserResponseModel userResponseModel = new UserResponseModel();
+		userResponseModel.setUserId(userDTO.getUserId());
+		userResponseModel.setEmail(userDTO.getEmail());
+		userResponseModel.setFirstName(userDTO.getFirstName());
+		userResponseModel.setLastName(userDTO.getLastName());
+		return userResponseModel;
 	}
 
 	@Override
@@ -69,12 +83,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO getUserDetailsByUserId(String userId) {
-		UserEO userEO = userRepo.findByUserId(userId);
+	public UserDTO getUserDetailsByUserId(Long userId) {
+		Optional<UserEO> optionalUserEO = userRepo.findById(userId);
 
-		if (userEO == null)
+		if (!optionalUserEO.isPresent())
 			throw new UsernameNotFoundException("User Not Found");
-		return new ModelMapper().map(userEO, UserDTO.class);
+		return new ModelMapper().map(optionalUserEO.get(), UserDTO.class);
 	}
 
 }

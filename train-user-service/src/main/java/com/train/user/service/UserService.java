@@ -3,13 +3,15 @@ package com.train.user.service;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.train.user.dto.UserDTO;
+import com.train.user.request.model.UserRequestModel;
+import com.train.user.response.model.UserResponseModel;
 
 public interface UserService extends UserDetailsService {
 
-	UserDTO addUser(UserDTO employeeDTO);
+	UserResponseModel addUser(UserRequestModel userRequestModel);
 
 	UserDTO getUserDetailsByEmail(String email);
 
-	UserDTO getUserDetailsByUserId(String userId);
+	UserDTO getUserDetailsByUserId(Long userId);
 
 }

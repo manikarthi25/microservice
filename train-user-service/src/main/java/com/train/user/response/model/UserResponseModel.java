@@ -17,6 +17,6 @@ public class UserResponseModel {
 	
 	private String email;
 	
-	private String userId;
+	private Long userId;
 
 }

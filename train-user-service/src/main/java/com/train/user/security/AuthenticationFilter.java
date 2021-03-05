@@ -61,11 +61,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 		String tokenExpireTimeDuration = environment.getProperty("token.expire.time.duration.ms");
 		System.out.println("token.expire.time.duration : " + tokenExpireTimeDuration);
 
-		String token = Jwts.builder().setSubject(userDetails.getUserId())
+		String token = Jwts.builder().setSubject(userDetails.getUserSecurityId())
 				.setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(tokenExpireTimeDuration)))
 				.signWith(SignatureAlgorithm.HS512, environment.getProperty("token.secret")).compact();
 		res.addHeader("token", token);
-		res.addHeader("userId", userDetails.getUserId());
+		res.addHeader("userSecurityId", userDetails.getUserSecurityId());
 
 	}
 }

@@ -52,12 +52,12 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 		}
 		String token = authorizationHeaderName.replace(environment.getProperty("authorization.token.header.prefix"),
 				"");
-		String userId = Jwts.parser().setSigningKey(environment.getProperty("token.secret")).parseClaimsJws(token)
+		String userRandomNumber = Jwts.parser().setSigningKey(environment.getProperty("token.secret")).parseClaimsJws(token)
 				.getBody().getSubject();
-		if (userId == null) {
+		if (userRandomNumber == null) {
 			return null;
 		}
-		return new UsernamePasswordAuthenticationToken(userId, null, new ArrayList<>());
+		return new UsernamePasswordAuthenticationToken(userRandomNumber, null, new ArrayList<>());
 	}
 
 }

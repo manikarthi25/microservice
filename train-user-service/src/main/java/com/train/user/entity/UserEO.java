@@ -26,7 +26,7 @@ public class UserEO implements Serializable {
 
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Long userId;
 
 	@Column(nullable = false, length = 10)
 	private String firstName;
@@ -38,7 +38,7 @@ public class UserEO implements Serializable {
 	private String email;
 
 	@Column(nullable = false)
-	private String userId;
+	private String userSecurityId;
 
 	@Column(nullable = false)
 	private String encryptedPassword;

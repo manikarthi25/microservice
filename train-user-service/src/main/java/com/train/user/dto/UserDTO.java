@@ -15,6 +15,8 @@ public class UserDTO implements Serializable {
 
 	private static final long serialVersionUID = 4906196889834127621L;
 
+	private Long userId;
+	
 	private String firstName;
 
 	private String lastName;
@@ -23,7 +25,7 @@ public class UserDTO implements Serializable {
 
 	private String password;
 
-	private String userId;
+	private String userSecurityId;
 
 	private String encryptedPassword;
 

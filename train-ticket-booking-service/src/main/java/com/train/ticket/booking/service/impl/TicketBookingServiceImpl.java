@@ -7,8 +7,12 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import com.train.ticket.booking.dto.PassengerDTO;
 import com.train.ticket.booking.dto.TicketBookingHistoryDTO;
@@ -17,8 +21,10 @@ import com.train.ticket.booking.entity.PassengerEO;
 import com.train.ticket.booking.entity.TicketBookingHistoryEO;
 import com.train.ticket.booking.entity.TrainEO;
 import com.train.ticket.booking.exception.TicketBookingBusinessException;
+import com.train.ticket.booking.feignclient.UserClient;
 import com.train.ticket.booking.model.LastTicketBookingHistory;
 import com.train.ticket.booking.model.TicketBooking;
+import com.train.ticket.booking.model.UserReponse;
 import com.train.ticket.booking.repo.PassengerRepo;
 import com.train.ticket.booking.repo.TicketBookingHistoryRepo;
 import com.train.ticket.booking.repo.TrainRepo;
@@ -26,6 +32,12 @@ import com.train.ticket.booking.service.TicketBookingService;
 
 @Service
 public class TicketBookingServiceImpl implements TicketBookingService {
+
+	@Autowired
+	private CircuitBreakerFactory circuitBreakerFactory;
+
+	@Autowired
+	private UserClient userClient;
 
 	@Autowired
 	private TicketBookingHistoryRepo ticketBookingHistoryRepo;
@@ -39,26 +51,64 @@ public class TicketBookingServiceImpl implements TicketBookingService {
 	ModelMapper modelMapper = new ModelMapper();
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public LastTicketBookingHistory bookTrainTicket(TicketBooking ticketBooking) throws TicketBookingBusinessException {
-		if(!(ticketBooking.getTicketCount() == ticketBooking.getPassengerList().size())) {
-			throw new TicketBookingBusinessException("Number of tickets and Number of passenger is not equal. Check passenger List and Ticket Count..");
+		UserReponse userReponse = getUserDetailsByUserId(ticketBooking.getUserId());
+		if (ObjectUtils.isEmpty(userReponse.getUserId())) {
+			throw new TicketBookingBusinessException("This user is not found. Please check the user");
+		} else {
+			if (!(ticketBooking.getTicketCount() == ticketBooking.getPassengerList().size())) {
+				throw new TicketBookingBusinessException(
+						"Number of tickets and Number of passenger is not equal. Check passenger List and Ticket Count..");
+			}
+			TrainEO trainEO = checkTrainAvailability(ticketBooking);
+			Double totalTicketFare = ticketBooking.getTicketCount() * trainEO.getTicketFare();
+			TicketBookingHistoryEO ticketBookingHistoryEO = getTicketBookingDetails(ticketBooking, trainEO,
+					totalTicketFare);
+
+			trainRepo.saveAndFlush(trainEO);
+			TicketBookingHistoryEO ticketBookingHistoryEORes = ticketBookingHistoryRepo.save(ticketBookingHistoryEO);
+
+			List<PassengerEO> passengerEOList = new ArrayList<>();
+			List<PassengerDTO> passengerDTOList = ticketBooking.getPassengerList();
+			passengerDTOList
+					.forEach(passengerDTO -> passengerEOList.add(mapToEO(passengerDTO, ticketBookingHistoryEORes)));
+
+			for (PassengerEO passengerEO : passengerEOList) {
+				passengerRepo.save(passengerEO);
+			}
+			return getLastTicketBookingHistory(ticketBooking.getUserId());
+
 		}
-		TrainEO trainEO = checkTrainAvailability(ticketBooking);
-		Double totalTicketFare = ticketBooking.getTicketCount() * trainEO.getTicketFare();
-		TicketBookingHistoryEO ticketBookingHistoryEO = getTicketBookingDetails(ticketBooking, trainEO,
-				totalTicketFare);
+	}
 
-		trainRepo.saveAndFlush(trainEO);
-		TicketBookingHistoryEO ticketBookingHistoryEORes = ticketBookingHistoryRepo.save(ticketBookingHistoryEO);
-
-		List<PassengerEO> passengerEOList = new ArrayList<>();
-		List<PassengerDTO> passengerDTOList = ticketBooking.getPassengerList();
-		passengerDTOList.forEach(passengerDTO -> passengerEOList.add(mapToEO(passengerDTO, ticketBookingHistoryEORes)));
-
-		for (PassengerEO passengerEO : passengerEOList) {
-			passengerRepo.save(passengerEO);
+	@Override
+	public LastTicketBookingHistory getLastTicketBookingHistory(Long userId) throws TicketBookingBusinessException {
+		List<TicketBookingHistoryEO> ticketBookingHistoryEOList = ticketBookingHistoryRepo
+				.findByUserIdOrderByBookingDateTimeDesc(userId);
+		if (!CollectionUtils.isEmpty(ticketBookingHistoryEOList)) {
+			return getLastTicketBookingHistory(mapToDTO(ticketBookingHistoryEOList.get(0)));
 		}
-		return getLastTicketBookingHistory(ticketBooking.getUserId());
+		throw new TicketBookingBusinessException(userId + " : This user is not booking any ticket sofar");
+	}
+
+	@Override
+	public UserReponse getUserDetailsByUserId(Long userId) {
+
+		CircuitBreaker circuitBreaker = circuitBreakerFactory.create("getuser");
+
+		UserReponse userReponse = circuitBreaker.run(() -> userClient.getUserDetailsByUserId(userId).getBody(),
+				Throwable -> getDefaultMessage(userId));
+		if (ObjectUtils.isEmpty(userReponse.getUserId())) {
+			userReponse.setMessage("Please try after some time");
+		} else {
+			userReponse.setMessage("User service up and running, Got response from user service");
+		}
+		return userReponse;
+	}
+
+	public UserReponse getDefaultMessage(Long userId) {
+		return new UserReponse();
 	}
 
 	private TicketBookingHistoryEO getTicketBookingDetails(TicketBooking ticketBooking, TrainEO trainEO,
@@ -100,16 +150,6 @@ public class TicketBookingServiceImpl implements TicketBookingService {
 					+ ", This train Arrival Place is " + trainEO.getArrivalPlace());
 		}
 		return trainEO;
-	}
-
-	@Override
-	public LastTicketBookingHistory getLastTicketBookingHistory(Long userId) throws TicketBookingBusinessException {
-		List<TicketBookingHistoryEO> ticketBookingHistoryEOList = ticketBookingHistoryRepo
-				.findByUserIdOrderByBookingDateTimeDesc(userId);
-		if (!CollectionUtils.isEmpty(ticketBookingHistoryEOList)) {
-			return getLastTicketBookingHistory(mapToDTO(ticketBookingHistoryEOList.get(0)));
-		}
-		throw new TicketBookingBusinessException(userId + " : This user is not booking any ticket sofar");
 	}
 
 	private LastTicketBookingHistory getLastTicketBookingHistory(TicketBookingHistoryDTO ticketBookingHistoryDTO) {

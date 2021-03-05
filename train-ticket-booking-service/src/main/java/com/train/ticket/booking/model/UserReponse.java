@@ -1,4 +1,4 @@
-package com.train.user.response.model;
+package com.train.ticket.booking.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,5 +18,7 @@ public class UserReponse {
 	private String email;
 	
 	private Long userId;
+	
+	private String message;
 
 }
