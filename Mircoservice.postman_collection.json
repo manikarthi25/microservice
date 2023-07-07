@@ -1,0 +1,106 @@
+{
+	"info": {
+		"_postman_id": "08c11e53-614c-48d2-b271-ed28d1e48958",
+		"name": "Mircoservice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "signup-user",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "mani",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Mahi\",\r\n    \"lastName\": \"Mani\",\r\n    \"email\": \"mahi@gmail.com\",\r\n    \"password\": \"mahi\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9001/user/signup",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"user",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "app-status",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "manieyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkMzUyZjQxNi1iZjU3LTRmYTYtYjZlZS1mOTM5ODRkM2I1ODkiLCJleHAiOjE2ODk2MTM2ODd9.nqUaC5QucrvkP70eTRV7L5nqv12Z1y72W5HhqnN2XJQMUVDoF8_C9sxiRgIWHbD8zySmQ505vgXEeubhwijZPw",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:9001/user/status",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"user",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"mahi@gmail.com\",\t\r\n\t\"password\":\"mahi\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9001/user/login",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
